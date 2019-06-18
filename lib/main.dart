@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:poketypes/poketypes.dart';
+
+import 'enemy.dart';
 
 void main() => runApp(MyApp());
 
@@ -6,11 +9,14 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Demo',
+      title: 'Jakuten',
       theme: ThemeData(
         primarySwatch: Colors.blue,
+        buttonTheme: ButtonThemeData(
+          minWidth: 44.0,
+        ),
       ),
-      home: MyHomePage(title: 'Flutter Demo Home Page'),
+      home: MyHomePage(title: 'Jakuten'),
     );
   }
 }
@@ -25,38 +31,51 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: <Widget>[
-            const Text(
-              'You have pushed the button this many times:',
+      body: Column(
+        children: <Widget>[
+          const LinearProgressIndicator(
+            value: 0.5,
+            backgroundColor: Colors.grey,
+            valueColor: AlwaysStoppedAnimation<Color>(Colors.red),
+          ),
+          Container(
+            alignment: Alignment.centerRight,
+            padding: const EdgeInsets.all(16.0),
+            child: Text(
+              'HP: 14/20',
+              style: TextStyle(
+                fontSize: 18.0,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-            Text(
-              '$_counter',
-              style: Theme.of(context).textTheme.display1,
+          ),
+          Expanded(
+            child: Enemy(
+              types: <Poketype>[Poketype('normal'), Poketype('fire')],
             ),
-          ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: _incrementCounter,
-        tooltip: 'Increment',
-        child: const Icon(Icons.add),
+          ),
+          Wrap(
+            spacing: 8.0,
+            children: Poketype.all.map((Poketype type) {
+              return FlatButton(
+                child: Text(type.label['ja'].substring(0, 1)),
+                color:
+                    Color(int.parse('ff' + type.color.substring(1), radix: 16)),
+                textColor: Colors.white,
+                onPressed: () {},
+              );
+            }).toList(),
+          ),
+          const SizedBox(
+            height: 16.0,
+          )
+        ],
       ),
     );
   }
