@@ -26,8 +26,8 @@ class _MyPainter extends CustomPainter {
   _MyPainter({this.types});
 
   List<Poketype> types;
-  double width = 100;
-  double height = 100;
+  double width = 120;
+  double height = 120;
 
   @override
   bool shouldRepaint(_MyPainter oldDelegate) {

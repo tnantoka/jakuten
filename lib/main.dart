@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:poketypes/poketypes.dart';
 
 import 'enemy.dart';
+import 'chart.dart';
 
 void main() => runApp(MyApp());
 
@@ -55,6 +56,21 @@ class _MyHomePageState extends State<MyHomePage> {
     return Scaffold(
       appBar: AppBar(
         title: Text(widget.title),
+        actions: <Widget>[
+          IconButton(
+            icon: const Icon(Icons.help_outline),
+            tooltip: 'Chart',
+            onPressed: () {
+              Navigator.push(
+                context,
+                MaterialPageRoute<void>(
+                  builder: (BuildContext context) => Chart(),
+                  fullscreenDialog: true,
+                ),
+              );
+            },
+          ),
+        ],
       ),
       body: _buildBody(),
       floatingActionButton: FloatingActionButton(
@@ -110,7 +126,12 @@ class _MyHomePageState extends State<MyHomePage> {
           children: Poketype.all.map((Poketype type) {
             return _isGameOver || _selectedTypes.contains(type.name)
                 ? OutlineButton(
-                    child: Text(type.label['ja'].substring(0, 1)),
+                    child: Text(
+                      type.label['ja'].substring(0, 1),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     color: Color(
                         int.parse('ff' + type.color.substring(1), radix: 16)),
                     textColor: Colors.white,
@@ -121,11 +142,18 @@ class _MyHomePageState extends State<MyHomePage> {
                             ? Colors.green
                             : _weakness[type.name] >= 1.0
                                 ? Colors.grey
-                                : Colors.red,
+                                : _weakness[type.name] >= 0.0
+                                    ? Colors.black
+                                    : Colors.red,
                     borderSide: BorderSide(width: 3.0),
                   )
                 : FlatButton(
-                    child: Text(type.label['ja'].substring(0, 1)),
+                    child: Text(
+                      type.label['ja'].substring(0, 1),
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
                     color: Color(
                         int.parse('ff' + type.color.substring(1), radix: 16)),
                     textColor: Colors.white,
