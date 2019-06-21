@@ -59,7 +59,7 @@ class _MyPainter extends CustomPainter {
         ParagraphBuilder(ParagraphStyle(textAlign: TextAlign.center))
           ..pushStyle(TextStyle(
               color: Colors.white, fontSize: 16.0, fontWeight: FontWeight.bold))
-          ..addText(types[0].name);
+          ..addText(types[0].label['ja']);
     final Paragraph paragraph = paragraphBuilder.build()
       ..layout(ParagraphConstraints(width: width));
     canvas.drawParagraph(
@@ -72,8 +72,6 @@ class _MyPainter extends CustomPainter {
 
       canvas.drawRect(
           Rect.fromLTWH(0, height * 0.5, width, height * 0.5), paint2);
-      canvas.drawRect(
-          Rect.fromLTWH(0, height * 0.5, width, height * 0.5), thin);
 
       final ParagraphBuilder paragraphBuilder2 =
           ParagraphBuilder(ParagraphStyle(textAlign: TextAlign.center))
@@ -87,6 +85,8 @@ class _MyPainter extends CustomPainter {
       canvas.drawParagraph(
           paragraph2, Offset(0, height * 0.8 - paragraph.height / 2));
     }
+
+    canvas.drawRect(Rect.fromLTWH(0, height * 0.5, width, height * 0.5), thin);
 
     final Paint white = Paint()..color = Colors.white;
     canvas.drawLine(
