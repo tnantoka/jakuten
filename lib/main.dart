@@ -16,7 +16,8 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blue,
         buttonTheme: ButtonThemeData(
-          minWidth: 44.0,
+          minWidth: 70.0,
+          height: 48.0,
         ),
       ),
       home: MyHomePage(title: 'Jakuten'),
@@ -94,9 +95,9 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Container(
           alignment: Alignment.centerRight,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(0, 8.0, 8.0, 0),
           child: Text(
-            'HP: $_currentLife/$_maxLife',
+            'HP: $_currentLife / $_maxLife',
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
@@ -110,7 +111,7 @@ class _MyHomePageState extends State<MyHomePage> {
         ),
         Container(
           alignment: Alignment.center,
-          padding: const EdgeInsets.fromLTRB(0, 0, 0, 32.0),
+          padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
           child: Text(
             // _isGameOver ? _currentLife < 1 ? 'You Win!' : 'You Lose...' : '',
             _isGameOver ? _currentLife < 1 ? 'やったね！' : 'ざんねん…' : '　',
@@ -121,66 +122,68 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        Wrap(
-          spacing: 8.0,
-          children: Poketype.all.map((Poketype type) {
-            return _isGameOver || _selectedTypes.contains(type.name)
-                ? OutlineButton(
-                    child: Text(
-                      type.label['ja'].substring(0, 1),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+        Container(
+          padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+          child: Wrap(
+            spacing: 16.0,
+            runSpacing: 8.0,
+            alignment: WrapAlignment.center,
+            children: Poketype.all.map((Poketype type) {
+              return _isGameOver || _selectedTypes.contains(type.name)
+                  ? OutlineButton(
+                      child: Text(
+                        '${type.label['ja'].substring(0, 1)}\n(${_weakness[type.name]})',
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    color: Color(
-                        int.parse('ff' + type.color.substring(1), radix: 16)),
-                    textColor: Colors.white,
-                    onPressed: null,
-                    disabledBorderColor: _weakness[type.name] >= 4.0
-                        ? Colors.cyan
-                        : _weakness[type.name] >= 2.0
-                            ? Colors.green
-                            : _weakness[type.name] >= 1.0
-                                ? Colors.grey
-                                : _weakness[type.name] >= 0.0
-                                    ? Colors.black
-                                    : Colors.red,
-                    borderSide: BorderSide(width: 3.0),
-                  )
-                : FlatButton(
-                    child: Text(
-                      type.label['ja'].substring(0, 1),
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
+                      textColor: Colors.white,
+                      onPressed: null,
+                      disabledBorderColor: _weakness[type.name] >= 4.0
+                          ? Colors.cyan
+                          : _weakness[type.name] >= 2.0
+                              ? Colors.green
+                              : _weakness[type.name] >= 1.0
+                                  ? Colors.grey
+                                  : _weakness[type.name] >= 0.5
+                                      ? Colors.red
+                                      : Colors.black,
+                      borderSide: BorderSide(width: 3.0),
+                    )
+                  : FlatButton(
+                      child: Text(
+                        type.label['ja'].substring(0, 1),
+                        style: TextStyle(
+                          fontWeight: FontWeight.bold,
+                        ),
+                        textAlign: TextAlign.center,
                       ),
-                    ),
-                    color: Color(
-                        int.parse('ff' + type.color.substring(1), radix: 16)),
-                    textColor: Colors.white,
-                    onPressed: () {
-                      if (_currentPower < 1) {
-                        return;
-                      }
-                      setState(() {
-                        _selectedTypes.add(type.name);
-                        _currentLife -= (10 * _weakness[type.name]).toInt();
-                        _currentPower -= 1;
+                      color: Color(
+                          int.parse('ff' + type.color.substring(1), radix: 16)),
+                      textColor: Colors.white,
+                      onPressed: () {
                         if (_currentPower < 1) {
-                          _isGameOver = true;
+                          return;
                         }
-                      });
-                    },
-                  );
-          }).toList(),
-        ),
-        const SizedBox(
-          height: 80.0,
+                        setState(() {
+                          _selectedTypes.add(type.name);
+                          _currentLife -= (10 * _weakness[type.name]).toInt();
+                          _currentPower -= 1;
+                          if (_currentPower < 1) {
+                            _isGameOver = true;
+                          }
+                        });
+                      },
+                    );
+            }).toList(),
+          ),
         ),
         Container(
           alignment: Alignment.centerLeft,
-          padding: const EdgeInsets.all(16.0),
+          padding: const EdgeInsets.fromLTRB(8.0, 0, 0, 8.0),
           child: Text(
-            'PP: $_currentPower/$_maxPower',
+            'PP: $_currentPower / $_maxPower',
             style: TextStyle(
               fontSize: 18.0,
               fontWeight: FontWeight.bold,
