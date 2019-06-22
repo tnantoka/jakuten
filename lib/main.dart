@@ -43,6 +43,7 @@ class _MyHomePageState extends State<MyHomePage> {
   int _currentPower = 0;
   bool _isGameOver = false;
   List<String> _selectedTypes = <String>[];
+  int _streaks = 0;
 
   final Random _random = Random();
 
@@ -119,7 +120,9 @@ class _MyHomePageState extends State<MyHomePage> {
           padding: const EdgeInsets.fromLTRB(0, 0, 0, 16.0),
           child: Text(
             // _isGameOver ? _currentLife < 1 ? 'You Win!' : 'You Lose...' : '',
-            _isGameOver ? _currentLife < 1 ? 'やったね！' : 'ざんねん…' : '　',
+            _isGameOver
+                ? _currentLife < 1 ? 'やったね！($_streaksれんぞく)' : 'ざんねん…'
+                : '　',
             style: TextStyle(
               fontSize: 36.0,
               fontWeight: FontWeight.bold,
@@ -177,6 +180,11 @@ class _MyHomePageState extends State<MyHomePage> {
                           _currentPower -= 1;
                           if (_currentPower < 1) {
                             _isGameOver = true;
+                            if (_currentLife < 1) {
+                              _streaks += 1;
+                            } else {
+                              _streaks = 0;
+                            }
                           }
                         });
                       },
