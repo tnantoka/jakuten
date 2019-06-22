@@ -3,8 +3,8 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:poketypes/poketypes.dart';
 
-import 'enemy.dart';
 import 'chart.dart';
+import 'enemy.dart';
 
 void main() => runApp(MyApp());
 
@@ -14,7 +14,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Jakuten',
       theme: ThemeData(
-        primarySwatch: Colors.blue,
+        primaryColor: Colors.grey[200],
         buttonTheme: ButtonThemeData(
           minWidth: 70.0,
           height: 48.0,
@@ -78,18 +78,23 @@ class _MyHomePageState extends State<MyHomePage> {
         onPressed: _refreshTypes,
         tooltip: 'Next',
         child: const Icon(Icons.chevron_right),
+        backgroundColor: Colors.grey[200],
+        foregroundColor: Colors.black,
       ),
     );
   }
 
   Widget _buildBody() {
+    final double life = _currentLife / _maxLife;
     return Column(
       children: <Widget>[
         SizedBox(
           child: LinearProgressIndicator(
-            value: _currentLife / _maxLife,
+            value: life,
             backgroundColor: Colors.grey,
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.orange),
+            valueColor: AlwaysStoppedAnimation<Color>(life > 0.5
+                ? Colors.green
+                : life > 0.2 ? Colors.orange : Colors.red),
           ),
           height: 8.0,
         ),
@@ -123,7 +128,7 @@ class _MyHomePageState extends State<MyHomePage> {
           ),
         ),
         Container(
-          padding: EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
+          padding: const EdgeInsets.fromLTRB(8.0, 0, 8.0, 0),
           child: Wrap(
             spacing: 16.0,
             runSpacing: 8.0,
@@ -190,12 +195,7 @@ class _MyHomePageState extends State<MyHomePage> {
             ),
           ),
         ),
-        SizedBox(
-          child: LinearProgressIndicator(
-            value: _currentPower / _maxPower,
-            backgroundColor: Colors.grey,
-            valueColor: const AlwaysStoppedAnimation<Color>(Colors.orange),
-          ),
+        const SizedBox(
           height: 8.0,
         ),
       ],
