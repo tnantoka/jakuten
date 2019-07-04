@@ -26,18 +26,14 @@ class _ChartState extends State<Chart> {
     for (Poketype type in types) {
       texts.add(type.label['ja'].substring(0, 1));
       for (double w in type.weakness.values) {
-        switch (w.toString()) {
-          case '0.0':
-            texts.add('✕');
-            break;
-          case '0.5':
-            texts.add('△');
-            break;
-          case '2.0':
-            texts.add('◯');
-            break;
-          default:
-            texts.add('');
+        if (w == 0) {
+          texts.add('✕');
+        } else if (w == 0.5) {
+          texts.add('△');
+        } else if (w == 2.0) {
+          texts.add('◯');
+        } else {
+          texts.add('');
         }
       }
     }
